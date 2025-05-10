@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server"
 
-import { NextRequest } from 'next/server'
-
-export async function GET(request: NextRequest, context: { params: { email: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { email: string } }
+) {
   try {
-    const email = context.params.email
+    const email = params.email
 
     // In a real implementation, you would make a request to your Spring Boot backend
-    const response = await fetch(`http://localhost:8080/api/blood-request/user/${email}`)
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
+    const response = await fetch(`${API_URL}/api/blood-request/user/${email}`)
     const data = await response.json()
 
     return NextResponse.json(data)
